@@ -59,6 +59,7 @@ public class TraversableMatrix implements Traversable<Index> {
     public Collection<List<Index>> allConnectedComponents() {
         ThreadLocalDFS dfs = new ThreadLocalDFS();
         HashSet<List<Index>> components=new HashSet<>();
+        Matrix tempMatrix=new Matrix();
         boolean[] visited = new boolean[V];
         for (int v = 0; v < V; ++v) {
             if (!visited[v]) {
