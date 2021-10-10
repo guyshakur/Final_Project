@@ -14,7 +14,7 @@ public class ThreadLocalBFS<T> {
     public void setAdjListArray(){
         for(int i=0;i<matrix.getSizeOfGraph();i++){
 
-            adjListArray = (ArrayList)matrix.getReachableNodes()
+
         }
     }
 
