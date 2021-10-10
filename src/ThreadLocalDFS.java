@@ -10,9 +10,7 @@ public class ThreadLocalDFS<T> {
     // ForkJoinPool
     // SparkRDD
     final ThreadLocal<Stack<Node<T>>> threadLocalStack = ThreadLocal.withInitial(() -> new Stack<Node<T>>()); // lambda expression
-    //    final ThreadLocal<Stack<Node<T>>> threadLocalStack2 = ThreadLocal.withInitial(Stack::new); // method reference
     final ThreadLocal<Set<Node<T>>> threadLocalSet = ThreadLocal.withInitial(LinkedHashSet::new);
-
     public List<T> traverse(Traversable<T> someGraph) {
         /*
         push origin to the Stack V
@@ -26,6 +24,8 @@ public class ThreadLocalDFS<T> {
                 push to stack
          */
         threadLocalStack.get().push(someGraph.getOrigin());
+        Node<Index>t= (Node<Index>) threadLocalStack.get().peek();
+
         while (!threadLocalStack.get().isEmpty()) {
             Node<T> popped = threadLocalStack.get().pop();
             threadLocalSet.get().add(popped);
@@ -38,6 +38,7 @@ public class ThreadLocalDFS<T> {
         }
         List<T> connectedComponent = new ArrayList<>();
         for (Node<T> node : threadLocalSet.get()) connectedComponent.add(node.getData());
+        threadLocalSet.get().clear();
         return connectedComponent;
     }
 }

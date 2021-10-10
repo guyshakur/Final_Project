@@ -1,7 +1,7 @@
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Index {
+public class Index implements Comparable<Index> {
     int row, column;
 
     // Constructor
@@ -27,5 +27,15 @@ public class Index {
     @Override
     public int hashCode() {
         return Objects.hash(row, column);
+    }
+
+    @Override
+    public int compareTo(Index o) {
+
+        if(this.row-o.row==0)
+        {
+            return this.column-o.column;
+        }
+        return this.row-o.row;
     }
 }

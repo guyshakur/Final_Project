@@ -7,6 +7,10 @@ import java.util.stream.Collectors;
 
 public class Matrix {
 
+    public void setPrimitiveMatrix(int[][] primitiveMatrix) {
+        this.primitiveMatrix = primitiveMatrix;
+    }
+
     public int[][] primitiveMatrix;
 
     public Matrix(int[][] oArray) {
@@ -60,6 +64,26 @@ public class Matrix {
         try {
             extracted = primitiveMatrix[index.row][index.column - 1];
             list.add(new Index(index.row, index.column - 1));
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+        }
+        try {
+            extracted = primitiveMatrix[index.row+1][index.column + 1];
+            list.add(new Index(index.row+1, index.column + 1));
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+        }
+        try {
+            extracted = primitiveMatrix[index.row+1][index.column - 1];
+            list.add(new Index(index.row+1, index.column - 1));
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+        }
+        try {
+            extracted = primitiveMatrix[index.row-1][index.column - 1];
+            list.add(new Index(index.row-1, index.column - 1));
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+        }
+        try {
+            extracted = primitiveMatrix[index.row-1][index.column + 1];
+            list.add(new Index(index.row-1, index.column + 1));
         } catch (ArrayIndexOutOfBoundsException ignored) {
         }
         return list;

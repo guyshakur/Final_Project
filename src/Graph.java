@@ -1,4 +1,7 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 class Graph {
 
@@ -10,6 +13,8 @@ class Graph {
     ArrayList<ArrayList<Integer>> adjListArray;
     HashSet<ArrayList<Integer>> components;
     List<List<Integer>> allPaths;
+    private Index[] fromValueToIndex; //keeps the index of each value in the matrix
+
 
     // constructor
     Graph(int V) {
@@ -31,7 +36,6 @@ class Graph {
     void addEdge(int src, int dest) {
         adjListArray.get(src).add(dest);
     }
-
 
     /**
      * @param start the starting node
@@ -78,44 +82,5 @@ class Graph {
         // Mark the current node
         isVisited[u] = false;
     }
-
-    /**
-     * DFS Algorithm
-     * @param v current vertex
-     * @param visited checks if we visited the vertex before
-     * @param arr collects the vertexes into the component
-     */
-    void DfsVisit(int v, boolean[] visited, ArrayList<Integer> arr) {
-        // Mark the current node as visited and print it
-        visited[v] = true;
-        arr.add(v);
-        System.out.print(v + " ");
-        // Recur for all the vertices
-        // adjacent to this vertex
-        for (int x : adjListArray.get(v)) {
-            if (!visited[x])
-                DfsVisit(x, visited, arr);
-        }
-        components.add(arr);
-    }
-
-
-    /**
-     * @return a list that represents the connected components in the graph
-     */
-    Collection<ArrayList<Integer>> connectedComponents() {
-        // Mark all the vertices as not visited
-        boolean[] visited = new boolean[V];
-        for (int v = 0; v < V; ++v) {
-            if (!visited[v]) {
-                // finds all reachable vertices from v
-                ArrayList<Integer> arr = new ArrayList<>();
-                DfsVisit(v, visited, arr);
-                System.out.println();
-            }
-        }
-        return components;
-    }
-
 
 }

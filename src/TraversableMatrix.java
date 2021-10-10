@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -11,6 +8,7 @@ public class TraversableMatrix implements Traversable<Index> {
     protected final Matrix matrix;
     protected Index startIndex;
     protected int V;
+
 
     public TraversableMatrix(Matrix matrix) {
         this.matrix = matrix;
@@ -32,9 +30,16 @@ public class TraversableMatrix implements Traversable<Index> {
 
     }
 
+
+
     @Override
     public Collection<Node<Index>> getReachableNodes(Node<Index> someNode) {
         List<Node<Index>> reachableIndices = new ArrayList<>();
+        if(matrix.getValue(someNode.getData())==0)
+        {
+            reachableIndices.add(someNode);
+            return  reachableIndices;
+        }
         for (Index index : this.matrix.getNeighbors(someNode.getData())) {
             if (matrix.getValue(index) == 1) {
                 // A neighboring index whose value is 1
@@ -43,6 +48,11 @@ public class TraversableMatrix implements Traversable<Index> {
             }
         }
         return reachableIndices;
+    }
+
+    @Override
+    public int getSizeOfGraph() {
+        return getV();
     }
 
     public Collection<Node<Index>> getReachableNodesWithStreams(Node<Index> someNode) {
@@ -58,17 +68,41 @@ public class TraversableMatrix implements Traversable<Index> {
 
     public Collection<List<Index>> allConnectedComponents() {
         ThreadLocalDFS dfs = new ThreadLocalDFS();
-        HashSet<List<Index>> components=new HashSet<>();
-        Matrix tempMatrix=new Matrix();
-        boolean[] visited = new boolean[V];
-        for (int v = 0; v < V; ++v) {
-            if (!visited[v]) {
-                // finds all reachable vertices from v and put it in a list
-                List<Index> sameConnectedComponentArr = new ArrayList<>();
-                sameConnectedComponentArr = dfs.traverse(this);
-                components.add(sameConnectedComponentArr);
-            }
-        }
+
+
+        List<Index> visited=new ArrayList<>();
+        LinkedHashSet<List<Index>> components=new LinkedHashSet<>();
+
+            for (int row=0;row<getSizeOfGraph();row++)
+                for(int col=0;col<V;col++)
+                {
+
+                    List<Index>sameConnectedComponentArr=new ArrayList<Index>();
+                    if(this.matrix.primitiveMatrix[row][col]==1&&!visited.contains(new Index(row,col))){
+                        this.setStartIndex(new Index(row, col));
+                        sameConnectedComponentArr=dfs.traverse(this);
+                        Collections.sort(sameConnectedComponentArr);
+                        components.add(sameConnectedComponentArr);
+
+                        //creating a list of all visited to create unique
+                        for(int i=0;i<sameConnectedComponentArr.size();i++)
+                        {
+                            visited.add(sameConnectedComponentArr.get(i));
+                        }
+
+                    }
+
+                }
+
+        System.out.println(components);
         return components;
+    }
+
+    public Matrix getMatrix() {
+        return matrix;
+    }
+
+    public int getV() {
+        return V;
     }
 }
