@@ -31,24 +31,39 @@ public class TraversableMatrix implements Traversable<Index> {
     }
 
 
-
     @Override
-    public Collection<Node<Index>> getReachableNodes(Node<Index> someNode) {
+    public Collection<Node<Index>> getReachableNodes(Node<Index> someNode,boolean isNeedDiagonal) {
         List<Node<Index>> reachableIndices = new ArrayList<>();
         if(matrix.getValue(someNode.getData())==0)
         {
             reachableIndices.add(someNode);
             return  reachableIndices;
         }
-        for (Index index : this.matrix.getNeighbors(someNode.getData())) {
-            if (matrix.getValue(index) == 1) {
-                // A neighboring index whose value is 1
-                Node<Index> indexNode = new Node<>(index, someNode);
-                reachableIndices.add(indexNode);
+        if(isNeedDiagonal) {
+            for (Index index : this.matrix.getNeighbors(someNode.getData())) {
+                if (matrix.getValue(index) == 1) {
+                    // A neighboring index whose value is 1
+                    Node<Index> indexNode = new Node<>(index, someNode);
+                    reachableIndices.add(indexNode);
+                }
             }
         }
+            else{
+                for (Index index : this.matrix.getReachablesWithoutdiagonals(someNode.getData())) {
+                    if (matrix.getValue(index) == 1) {
+                        // A neighboring index whose value is 1
+                        Node<Index> indexNode = new Node<>(index, someNode);
+                        reachableIndices.add(indexNode);
+                    }
+                }
+            }
         return reachableIndices;
-    }
+        }
+
+
+
+
+
 
     @Override
     public int getSizeOfGraph() {
@@ -81,7 +96,7 @@ public class TraversableMatrix implements Traversable<Index> {
                     List<Index>sameConnectedComponentArr=new ArrayList<Index>();
                     if(this.matrix.primitiveMatrix[row][col]==1&&!visited.contains(new Index(row,col))){
                         this.setStartIndex(new Index(row, col));
-                        sameConnectedComponentArr=dfs.traverse(this);
+                        sameConnectedComponentArr=dfs.traverse(this,true);
                         Collections.sort(sameConnectedComponentArr);
                         components.add(sameConnectedComponentArr);
 
@@ -95,8 +110,38 @@ public class TraversableMatrix implements Traversable<Index> {
 
                 }
 
-        System.out.println(components);
+        //System.out.println(components);
         return components;
+    }
+
+    public List<List<Index>>getAllShortestsPaths(Index src,Index dest){
+        Path path=new Path();
+
+        return path.BFS(matrix.primitiveMatrix,src,dest);
+    }
+
+    public int LegalSubmarines(Collection<List<Index>> arr){
+
+        int numOfSubmarines = 0;
+        int counter = 0;
+        boolean diagonalFlag = true;
+        Iterator itr = arr.iterator();
+        while (itr.hasNext()){
+            counter = 0;
+            diagonalFlag = true;
+            HashSet<Index> help = new HashSet<>((ArrayList)itr.next());
+           // help = (HashSet<Index>) itr.next();
+            Iterator itr2 = help.iterator();
+            while (itr2.hasNext()){
+                counter++;
+                if(!matrix.findDiagonalWithIndex((Index)itr2.next()))
+                    diagonalFlag = false;
+            }
+            if(diagonalFlag && counter>1)
+                numOfSubmarines++;
+        }
+        return numOfSubmarines;
+
     }
 
     public Matrix getMatrix() {

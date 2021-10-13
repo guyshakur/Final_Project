@@ -6,8 +6,9 @@ import java.util.*;
 public class Client {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         // In order to request something over TCP from a server, we need a port number and an IP address
+        //socket is an abstraction of 2-way data pipe
         Socket socket = new Socket("127.0.0.1",8010);
-        // socket is an abstraction of 2-way data pipe
+        System.out.println("Created client Socket");
         InputStream inputStream = socket.getInputStream();
         OutputStream outputStream = socket.getOutputStream();
 

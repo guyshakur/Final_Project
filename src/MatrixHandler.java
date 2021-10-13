@@ -58,8 +58,20 @@ public class MatrixHandler implements IHandler {
                     doWork = false;
                     break;
                 }
+
+
             }
         }
+
+    }
+
+    /**
+     *
+     */
+    private void resetParams(){
+        this.matrix=null;
+        this.start=null;
+        this.end=null;
 
     }
 }

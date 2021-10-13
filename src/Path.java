@@ -86,7 +86,7 @@ class Path
         return allShortestPaths;
     }
 
-    public static void printPaths(List<Index>path){
+    public void printPaths(List<Index>path){
         for(int i=path.size()-1;i>=0;i--){
             if(i==0){
                 System.out.print(path.get(0));

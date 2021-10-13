@@ -11,7 +11,8 @@ public class ThreadLocalDFS<T> {
     // SparkRDD
     final ThreadLocal<Stack<Node<T>>> threadLocalStack = ThreadLocal.withInitial(() -> new Stack<Node<T>>()); // lambda expression
     final ThreadLocal<Set<Node<T>>> threadLocalSet = ThreadLocal.withInitial(LinkedHashSet::new);
-    public List<T> traverse(Traversable<T> someGraph) {
+
+    public List<T> traverse(Traversable<T> someGraph,boolean traverseWithDiagonal) {
         /*
         push origin to the Stack V
         while stack is not empty: V
@@ -29,7 +30,12 @@ public class ThreadLocalDFS<T> {
         while (!threadLocalStack.get().isEmpty()) {
             Node<T> popped = threadLocalStack.get().pop();
             threadLocalSet.get().add(popped);
-            Collection<Node<T>> reachableNodes = someGraph.getReachableNodes(popped);
+            Collection<Node<T>> reachableNodes;
+            if(traverseWithDiagonal)
+                reachableNodes=someGraph.getReachableNodes(popped,true);
+            else
+                reachableNodes=someGraph.getReachableNodes(popped,false);
+
             for (Node<T> singleReachableNode : reachableNodes) {
                 if (!threadLocalSet.get().contains(singleReachableNode) && !threadLocalStack.get().contains(singleReachableNode)) {
                     threadLocalStack.get().push(singleReachableNode);
@@ -41,5 +47,6 @@ public class ThreadLocalDFS<T> {
         threadLocalSet.get().clear();
         return connectedComponent;
     }
+
 }
 
