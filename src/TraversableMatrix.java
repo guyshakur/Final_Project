@@ -66,6 +66,7 @@ public class TraversableMatrix implements Traversable<Index> {
         return matrix.toString();
     }
 
+
     public Collection<List<Index>> allConnectedComponents() {
         ThreadLocalDFS dfs = new ThreadLocalDFS();
 

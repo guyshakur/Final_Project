@@ -8,6 +8,16 @@ import java.util.Objects;
  */
 public class Node<T> {
     private T data;
+    private int dist;
+
+    public int getDist() {
+        return dist;
+    }
+
+    public void setDist(int dist) {
+        this.dist = dist;
+    }
+
     private Node<T> parent;
 
 

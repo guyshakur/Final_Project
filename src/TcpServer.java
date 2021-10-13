@@ -4,6 +4,7 @@ import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class TcpServer {
     /*
@@ -51,6 +52,7 @@ public class TcpServer {
     private final int port; // port associated with the server
     private boolean stopServer;  // if the server should continue serving clients
     private ThreadPoolExecutor threadPool; // handle multiple clients concurrently
+    private final ReentrantLock lock = new ReentrantLock();
     private IHandler requestHandler;
 
     public TcpServer(int port) {
@@ -110,12 +112,15 @@ public class TcpServer {
     }
 
     public void stop(){
+        lock.lock();
         if(!stopServer){
             stopServer = true;
             if(threadPool!=null){ // avoid situation that someone stopped the server
                 // without ever invoking run method
                 threadPool.shutdown();
             }
+
         }
+        lock.unlock();
     }
 }
