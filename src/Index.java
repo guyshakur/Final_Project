@@ -1,7 +1,7 @@
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Index implements Comparable<Index> {
+public class Index implements Comparable<Index> ,Serializable{
     int row, column;
 
     // Constructor

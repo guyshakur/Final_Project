@@ -1,9 +1,10 @@
 // Java program to find the shortest
 // path between a given source cell
 // to a destination cell.
+import java.io.Serializable;
 import java.util.*;
 
-class Path
+public class ThreadLocalBFS
 {
     final ThreadLocal<Queue<Node<Index>>> threadLocalQueue = ThreadLocal.withInitial(() -> new LinkedList<Node<Index>>());
     // check whether given cell (row, col)

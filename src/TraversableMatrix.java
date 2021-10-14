@@ -92,7 +92,6 @@ public class TraversableMatrix implements Traversable<Index> {
             for (int row=0;row<getSizeOfGraph();row++)
                 for(int col=0;col<V;col++)
                 {
-
                     List<Index>sameConnectedComponentArr=new ArrayList<Index>();
                     if(this.matrix.primitiveMatrix[row][col]==1&&!visited.contains(new Index(row,col))){
                         this.setStartIndex(new Index(row, col));
@@ -100,7 +99,7 @@ public class TraversableMatrix implements Traversable<Index> {
                         Collections.sort(sameConnectedComponentArr);
                         components.add(sameConnectedComponentArr);
 
-                        //creating a list of all visited to create unique
+                        //creating a list of all visited
                         for(int i=0;i<sameConnectedComponentArr.size();i++)
                         {
                             visited.add(sameConnectedComponentArr.get(i));
@@ -115,9 +114,16 @@ public class TraversableMatrix implements Traversable<Index> {
     }
 
     public List<List<Index>>getAllShortestsPaths(Index src,Index dest){
-        Path path=new Path();
+        ThreadLocalBFS path=new ThreadLocalBFS();
 
         return path.BFS(matrix.primitiveMatrix,src,dest);
+    }
+
+    public void printAllShortestPats(List<List<Index>>paths){
+        ThreadLocalBFS path=new ThreadLocalBFS();
+        for(int i=0;i<paths.size();i++){
+            path.printPaths(paths.get(i));
+        }
     }
 
     public int LegalSubmarines(Collection<List<Index>> arr){

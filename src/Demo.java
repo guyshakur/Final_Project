@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Demo {
 
     public static void main(String[] args) {
@@ -40,19 +37,23 @@ public class Demo {
        myMatrixGraph.allConnectedComponents();
 
 
-        Path p=new Path();
+        ThreadLocalBFS p=new ThreadLocalBFS();
 
         Index source = new Index(0, 3);
         Index dest = new Index(1, 1);
 
 
-        Path path=new Path();
-        List<List<Index>>bla=path.BFS(myArray, source, dest);
-        path.printPaths(bla.get(0));
+       // Path path=new Path();
+       // List<List<Index>>bla=path.BFS(myArray2, source, dest);
+       // path.printPaths(bla.get(0));
 
 
         int bb= myMatrixGraph.LegalSubmarines(myMatrixGraph.allConnectedComponents());
         System.out.println(bb);
+
+
+
+
 
 
 
