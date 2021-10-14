@@ -132,7 +132,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.*;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -140,6 +139,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class TcpServer {
     private final int port;
+    private Socket request;
     private volatile boolean stopServer;
     private ThreadPoolExecutor executor;
     private IHandler requestConcreteIHandler;
@@ -151,22 +151,26 @@ public class TcpServer {
         executor = null;
     }
 
-    public void run(IHandler concreteIHandlerStrategy) {
-        this.requestConcreteIHandler = concreteIHandlerStrategy;
+    public void supportClients(IHandler concreteIHandlerStrategy) {
 
+        this.requestConcreteIHandler = concreteIHandlerStrategy;
         Runnable mainLogic = () -> {
             try {
                 executor = new ThreadPoolExecutor(
                         20, 30, 10,
                         TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+
                 ServerSocket server = new ServerSocket(port);
                 server.setSoTimeout(1000);
                 while (!stopServer) {
                     try {
-                        Socket request = server.accept(); // Wrap with a separate thread
+
+                        request = server.accept(); // Wrap with a separate thread
+
                         System.out.println("server::client");
                         Runnable runnable = () -> {
                             try {
+
                                 System.out.println("server::handle");
                                 requestConcreteIHandler.handle(request.getInputStream(),
                                         request.getOutputStream());
@@ -203,7 +207,7 @@ public class TcpServer {
     }
     public static void main(String[] args) {
         TcpServer tcpServer =new TcpServer(8010);
-        tcpServer.run(new MatrixHandler());
+        tcpServer.supportClients(new MatrixHandler());
     }
 
 }

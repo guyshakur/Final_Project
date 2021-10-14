@@ -113,7 +113,7 @@ public class Matrix implements Serializable {
         return list;
     }
 
-    public boolean findDiagonalWithIndex(Index index){
+    public boolean findIfIndexHaveNoDiagonals(Index index){
             int counter1, counter2, counter3, counter4;
             counter1 = counter2 = counter3 = counter4 = 0;
             int extracted = -1;

@@ -126,12 +126,12 @@ public class TraversableMatrix implements Traversable<Index> {
         }
     }
 
-    public int LegalSubmarines(Collection<List<Index>> arr){
+    public int LegalSubmarines(Collection<List<Index>> allComponentsArr){
 
         int numOfSubmarines = 0;
         int counter = 0;
         boolean diagonalFlag = true;
-        Iterator itr = arr.iterator();
+        Iterator itr = allComponentsArr.iterator();
         while (itr.hasNext()){
             counter = 0;
             diagonalFlag = true;
@@ -140,7 +140,7 @@ public class TraversableMatrix implements Traversable<Index> {
             Iterator itr2 = help.iterator();
             while (itr2.hasNext()){
                 counter++;
-                if(!matrix.findDiagonalWithIndex((Index)itr2.next()))
+                if(!matrix.findIfIndexHaveNoDiagonals((Index)itr2.next()))
                     diagonalFlag = false;
             }
             if(diagonalFlag && counter>1)
